@@ -1,18 +1,43 @@
-var $overlay = $('<div id="overlay"> </div>')
-var $image
+var $overlay = $('<div id="overlay"></div>')
+var $image = $('<img id="overlay-img">')
+var $caption = $('<p id="caption"></p>')
 
-//on click event show lightbox image
-$(".pics a").click(function(event){
+//Add image to overlay
+$overlay.append($image);
+
+//Add caption to overlay
+$overlay.append($caption);
+
+//Add overlay to body
+$("body").append($overlay);
+
+//Capture click event and link clicked
+$(".container a").click(function(event){
 	//prevent default behavior
 	event.preventDefault();
-	//append overlay mask element to body
-	$overlay.appendTo("body");
-	//show linked image (href) centerd in body
-		//get the href of linked image -NOTE FOR MENTOR, TRIED TO DEFINE THE VARIABLE HERE BUT DIDNT WORK, HAD TO DEFINE IN GLBAL SCOPE
-		$image = $('<img class="overlay-pic" src="' + $(this).attr("href") + '">');
-		//add the image to overlay element
-		$image.appendTo("body");
+	
+	//Capture the image location
+	var imageLocation = $(this).attr("href")
+
+	//update the overlay-img with the image location
+	$image.attr("src", imageLocation);
+
+	//Capture the alt attribute of the element clicked
+	var captionClicked = $(this).children().attr("alt")
+
+	//update the overlay with the image location
+	$caption.text(captionClicked);
+
+	//show the overlay
+	$overlay.show();
+
 });
+
+//When overlay is clicked we want to hide the overlay - UPDATE THIS WITH AN Close button
+
+$("#overlay").click(function(){
+	$(this).hide();
+})
 
 
 
