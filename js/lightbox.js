@@ -5,8 +5,27 @@ var $imageSelected = $('');
 var $imageLocation = $('');
 var $captionClicked = $('');
 var $prevImageDiv = $('');
-var $prevImageLocation = $('');
 var $nextImageDiv = $('');
+
+//This function updates the appropriate elements when user is cycling images in lightbox
+function cycleImage(getDiv) {
+	
+	//update imageLocation with the href from the next div anchor element  
+	$imageLocation = getDiv.find("a").attr("href");
+
+	//update the #overlay-img's src attribute
+	$image.find('#overlay-img').attr("src", $imageLocation);
+
+	//update caption clicked to be alt attribute of next image
+	$captionClicked = getDiv.find("img").attr("alt");
+
+	//update caption of overlay
+	$caption.text($captionClicked);
+	
+	//update imageSelected to be current image
+	$imageSelected = getDiv.find("a");
+	
+}
 
 //Add image to overlay
 $overlay.append($image);
@@ -56,32 +75,19 @@ $overlay.click(function(event){
 	} 	
 })
 
-//When arrow is clicked, we want to cycle through the images
+//When arrows are clicked, we want to cycle through the images backward or forward
 
 $("#arrow-left").click(function(){
 	
 	if(!$imageSelected.is("#first")) {
 	
-	//traverse up DOM to get previous .pics div
+	//traverse up DOM to get next .pics div
 	$prevImageDiv = $imageSelected.closest("div").prev();
 	
-	//update imageLocation with the href from the previous div anchor element  
-	$imageLocation = $prevImageDiv.find("a").attr("href");
-
-	//update the #overlay-img's src attribute
-	$image.find('#overlay-img').attr("src", $imageLocation);
-
-	//update caption clicked to be alt attribute of previous image
-	$captionClicked = $prevImageDiv.find("img").attr("alt");
-
-	//update caption of overlay
-	$caption.text($captionClicked);
-	
-	//update imageSelected to be current image
-	$imageSelected = $prevImageDiv.find("a");
+	cycleImage($prevImageDiv); 
 	
 	}
-
+	
 	return false;
 })
 
@@ -92,46 +98,17 @@ $("#arrow-right").click(function(){
 	//traverse down DOM to get next .pics div
 	$nextImageDiv = $imageSelected.closest("div").next();
 	
-	//update imageLocation with the href from the next div anchor element  
-	$imageLocation = $nextImageDiv.find("a").attr("href");
-
-	//update the #overlay-img's src attribute
-	$image.find('#overlay-img').attr("src", $imageLocation);
-
-	//update caption clicked to be alt attribute of next image
-	$captionClicked = $nextImageDiv.find("img").attr("alt");
-
-	//update caption of overlay
-	$caption.text($captionClicked);
-	
-	//update imageSelected to be current image
-	$imageSelected = $nextImageDiv.find("a");
+	cycleImage($nextImageDiv); 
 	
 	}
-
+	
 	return false;
 })
 
-/*
-function getImage() {
 
-	//update imageLocation with the href from the next div anchor element  
-	$imageLocation = $nextImageDiv.find("a").attr("href");
 
-	//update the #overlay-img's src attribute
-	$image.find('#overlay-img').attr("src", $imageLocation);
 
-	//update caption clicked to be alt attribute of next image
-	$captionClicked = $nextImageDiv.find("img").attr("alt");
 
-	//update caption of overlay
-	$caption.text($captionClicked);
-	
-	//update imageSelected to be current image
-	$imageSelected = $nextImageDiv.find("a");
-
-}
-*/
 
 
 
