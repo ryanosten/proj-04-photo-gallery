@@ -1,7 +1,12 @@
 var $overlay = $('<div id="overlay"></div>')
 var $image = $('<div id="img-wrapper"><a id="arrow-left"></a><img id="overlay-img"><a id="arrow-right"></a><a id="close-button"></a></div>')
 var $caption = $('<p id="caption"></p>')
-var $thumbClicked = $('');
+var $imageSelected = $('');
+var $imageLocation = $('');
+var $captionClicked = $('');
+var $prevImageDiv = $('');
+var $prevImageLocation = $('');
+var $nextImageDiv = $('');
 
 //Add image to overlay
 $overlay.append($image);
@@ -18,19 +23,19 @@ $(".container a").click(function(event){
 	event.preventDefault();
 	
 	//store thumbnail anchor that was clicked for cycling through pics with arrows
-	$thumbClicked = $(event.target)
+	$imageSelected= $(event.target)
 	
 	//Capture the image location
-	var imageLocation = $(this).attr("href")
+	imageLocation = $(this).attr("href")
 
 	//update the overlay-img with the image location
 	$image.children("#overlay-img").attr("src", imageLocation);
 
 	//Capture the alt attribute of the element clicked
-	var captionClicked = $(this).children().attr("alt")
+	$captionClicked = $(this).children().attr("alt")
 
 	//update the overlay with the image location
-	$caption.text(captionClicked);
+	$caption.text($captionClicked);
 
 	//show the overlay
 	$overlay.show();
@@ -40,8 +45,10 @@ $(".container a").click(function(event){
 //When overlay is clicked we want to hide the overlay - UPDATE THIS WITH AN Close button
 
 $overlay.click(function(event){
+	
 	//capture event target
 	var clicked = $(event.target);
+	
 	//hide if click was not on overlay image wrapper
 	if(!clicked.is('#overlay-img')){
 		$overlay.hide();
@@ -50,14 +57,53 @@ $overlay.click(function(event){
 
 //When arrow is clicked, we want to cycle through the images
 
+
 $("#arrow-left").click(function(){
-	//get the href of the previous image in dom tree
-	var prevImage = $thumbClicked.prev();
-	 
-	$image.children("#img-overlay").attr("src", prevImage)
-	console.log('left arrow was clicked');
+	
+	//traverse up DOM to get previous .pics div
+	$prevImageDiv = $imageSelected.closest("div").prev();
+	
+	//grab the href from the anchor element
+	$prevImageLocation = $prevImageDiv.find("a").attr("href");
+
+	//update the #overlay-img's src attribute
+	$image.find('#overlay-img').attr("src", $prevImageLocation);
+
+	//update caption clicked to be caption of previous image
+	$captionClicked = $prevImageDiv.find("img").attr("alt");
+
+	//update caption of overlay
+	$caption.text($captionClicked);
+	
+	//update imageSelected to be current image
+	$imageSelected = $prevImageDiv.find("a");
+
 	return false;
 })
+
+$("#arrow-right").click(function(){
+	
+	//traverse down DOM to get next .pics div
+	$nextImageDiv = $imageSelected.closest("div").next();
+	
+	//grab the href from the anchor element
+	$nextImageLocation = $nextImageDiv.find("a").attr("href");
+
+	//update the #overlay-img's src attribute
+	$image.find('#overlay-img').attr("src", $nextImageLocation);
+
+	//update caption clicked to be caption of previous image
+	$captionClicked = $nextImageDiv.find("img").attr("alt");
+
+	//update caption of overlay
+	$caption.text($captionClicked);
+	
+	//update imageSelected to be current image
+	$imageSelected = $nextImageDiv.find("a");
+
+	return false;
+})
+
 
 
 
