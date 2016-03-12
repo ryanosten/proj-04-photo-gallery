@@ -24,16 +24,16 @@ $(".container a").click(function(event){
 	event.preventDefault();
 	
 	//store thumbnail anchor that was clicked for cycling through pics with arrows
-	$imageSelected = $(event.target)
+	$imageSelected = $(event.target);
 	
 	//capture the image location
-	$imageLocation = $(this).attr("href")
+	$imageLocation = $(this).attr("href");
 
 	//update the overlay-img with the image location
 	$image.children("#overlay-img").attr("src", $imageLocation);
 
 	//Capture the alt attribute of the element clicked
-	$captionClicked = $(this).children().attr("alt")
+	$captionClicked = $(this).children().attr("alt");
 
 	//update the overlay with the image location
 	$caption.text($captionClicked);
