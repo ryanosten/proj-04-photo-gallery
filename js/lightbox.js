@@ -92,7 +92,7 @@ $("#arrow-right").click(function(){
 	//update the #overlay-img's src attribute
 	$image.find('#overlay-img').attr("src", $nextImageLocation);
 
-	//update caption clicked to be caption of previous image
+	//update $captionclicked to be caption of previous image
 	$captionClicked = $nextImageDiv.find("img").attr("alt");
 
 	//update caption of overlay

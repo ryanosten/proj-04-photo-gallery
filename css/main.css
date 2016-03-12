@@ -84,6 +84,12 @@
 	color: white;
 }
 
+#arrow-right:hover,
+#arrow-left:hover,
+#close-button {
+	cursor: pointer;
+}
+
 #arrow-right::before {
 	content: '';
 	width: 1.5em;
