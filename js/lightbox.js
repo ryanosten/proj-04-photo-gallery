@@ -24,7 +24,7 @@ $(".container a").click(function(event){
 	event.preventDefault();
 	
 	//store thumbnail anchor that was clicked for cycling through pics with arrows
-	$imageSelected= $(event.target)
+	$imageSelected = $(event.target)
 	
 	//capture the image location
 	$imageLocation = $(this).attr("href")
