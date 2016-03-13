@@ -27,6 +27,14 @@ function cycleImage(getDiv) {
 	
 }
 
+function arrowCheck(arrow, id) {
+	if($imageSelected.is(id)){
+		$(arrow).hide();
+	} else {
+		$(arrow).show();
+	}
+}
+
 //Add image to overlay
 $overlay.append($image);
 
@@ -43,7 +51,7 @@ $(".container a").click(function(event){
 	event.preventDefault();
 	
 	//store thumbnail anchor that was clicked for cycling through pics with arrows
-	$imageSelected = $(event.target);
+	$imageSelected = $(event.target).parent();
 	
 	//capture the image location
 	$imageLocation = $(this).attr("href");
@@ -59,6 +67,9 @@ $(".container a").click(function(event){
 
 	//show the overlay
 	$overlay.show();
+
+	arrowCheck('#arrow-left', '#first');
+	arrowCheck('#arrow-right', '#last'); 
 
 });
 
@@ -78,15 +89,18 @@ $overlay.click(function(event){
 //When arrows are clicked, we want to cycle through the images backward or forward
 
 $("#arrow-left").click(function(){
-	
+
 	if(!$imageSelected.is("#first")) {
-	
-	//traverse up DOM to get next .pics div
-	$prevImageDiv = $imageSelected.closest("div").prev();
-	
-	cycleImage($prevImageDiv); 
-	
+		
+		//traverse up DOM to get next .pics div
+		$prevImageDiv = $imageSelected.closest("div").prev();
+		
+		cycleImage($prevImageDiv);
+
 	}
+
+	arrowCheck('#arrow-left', '#first');
+	arrowCheck('#arrow-right', '#last');
 	
 	return false;
 })
@@ -101,9 +115,14 @@ $("#arrow-right").click(function(){
 	cycleImage($nextImageDiv); 
 	
 	}
+
+	arrowCheck('#arrow-left', '#first');
+	arrowCheck('#arrow-right', '#last'); 
 	
 	return false;
 })
+
+
 
 
 
