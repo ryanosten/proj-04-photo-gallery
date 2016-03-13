@@ -1,20 +1,31 @@
-var $val = $('');
+var $value = $('');
 var $altText = $('');
 var count = 0;
 
+
+//When user enters text in the input field, check the alt text on imgs and only show imgs that match input text
 $('#search').keyup(function() {
-	$val = $(this).val().toLowerCase();
-	count = $val.length
+	
+	//store the input text and store count of number of characters in input
+	$value = $(this).val().toLowerCase();
+	count = $value.length
 
-	$(".container img").hide();
+	//hide all images
+	$(".container img").css("visibility", "hidden");
 
+	//only show images where $value matches the alt attribute value of img
 	$(".container img").each(function(){
+		
+		//get the alt value and store it 
 		$altText = $(this).attr("alt").toLowerCase();
 
-		if($altText.substring(0, count) == $val){
-			$(this).show();
+		/*check if the alt text matches the search input value. Must use substring method 
+		to check for exact match at beginning of alt text, otherwise module will look for $value at any position in $altText*/
+		if($altText.substring(0, count) == $value){
+			$(this).css("visibility", "visible");
 		} 
 	})
 })
 
-
+/*note: I decided to manipulate the css property values instead of using .hide() and .show() 
+so that the divs stay in same position on the page after search. */

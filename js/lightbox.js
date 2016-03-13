@@ -27,6 +27,8 @@ function cycleImage(getDiv) {
 	
 }
 
+/*This function checks what image was selected by user, and shows appropriate arrows. 
+Don't want to show left arrow if user clicked 1st image.*/
 function arrowCheck(arrow, id) {
 	if($imageSelected.is(id)){
 		$(arrow).hide();
@@ -109,10 +111,10 @@ $("#arrow-right").click(function(){
 	
 	if(!$imageSelected.is("#last")) {
 	
-	//traverse down DOM to get next .pics div
-	$nextImageDiv = $imageSelected.closest("div").next();
-	
-	cycleImage($nextImageDiv); 
+		//traverse down DOM to get next .pics div
+		$nextImageDiv = $imageSelected.closest("div").next();
+		
+		cycleImage($nextImageDiv); 
 	
 	}
 
@@ -121,6 +123,8 @@ $("#arrow-right").click(function(){
 	
 	return false;
 })
+
+
 
 
 
