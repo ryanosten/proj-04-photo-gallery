@@ -1,36 +1,83 @@
 var $overlay = $('<div id="overlay"></div>')
-var $image = $('<div id="img-wrapper"><a id="arrow-left"></a><img id="overlay-img"><a id="arrow-right"></a><a id="close-button"></a></div>')
+var $overlayContainer = $('<div id="img-wrapper"><a id="arrow-left"></a><div id="media-container"></div><a id="arrow-right"></a><a id="close-button"></a></div>')
 var $caption = $('<p id="caption"></p>')
-var $imageSelected = $('');
-var $imageLocation = $('');
+var $imageElement = $('<img id="overlay-img">');
+var $videoElement = $('<iframe id="overlay-video" width="560" height="315" frameborder="0"></iframe>');
+var $mediaSelected = $('');
+var $mediaLocation = $('');
 var $captionClicked = $('');
-var $prevImageDiv = $('');
-var $nextImageDiv = $('');
+var $prevMediaDiv = $('');
+var $nextMediaDiv = $('');
+
+
+function nextVideo(getDiv){
+
+		//get $mediaLocation
+		$mediaLocation = getDiv.find("a").attr("src");
+		
+		//update the #overlay-video
+		$("#overlay-video").attr("src", $mediaLocation);
+
+		//update $mediaSelected
+		$mediaSelected = getDiv.find("a");
+}
+
+function nextImage(getDiv){
+
+		//update mediaLocation with the href from the next div anchor element
+		$mediaLocation = getDiv.find("a").attr("href");
+
+		//update the #overlay-img's src attribute
+		$('#overlay-img').attr("src", $mediaLocation);
+		
+		//update mediaSelected to be current media
+		$mediaSelected = getDiv.find("a");
+}
 
 //This function updates the appropriate elements when user is cycling images in lightbox
-function cycleImage(getDiv) {
+function cycleMedia(getDiv) {
 	
-	//update imageLocation with the href from the next div anchor element  
-	$imageLocation = getDiv.find("a").attr("href");
+	//store whether current media is video
+	var isVideo = $mediaSelected.is('.video');
+	//store whether next media is a video
+	var nextIsVideo = getDiv.children('a').is('.video')
 
-	//update the #overlay-img's src attribute
-	$image.find('#overlay-img').attr("src", $imageLocation);
+	//check whether current media is video and if next is video
+	if(isVideo && nextIsVideo){
+		
+		nextVideo(getDiv);
 
-	//update caption clicked to be alt attribute of next image
-	$captionClicked = getDiv.find("img").attr("alt");
+		//check if current is vidoe and next is not a video
+	} else if(isVideo && !nextIsVideo) {
+		
+		//replace $videoElement with $imageElement
+		$($videoElement).replaceWith($imageElement);
 
-	//update caption of overlay
-	$caption.text($captionClicked);
-	
-	//update imageSelected to be current image
-	$imageSelected = getDiv.find("a");
-	
+		nextImage(getDiv);
+		
+	} else if(!isVideo && nextIsVideo) {
+
+		//replace $imageElement with $videoElement
+		$($imageElement).replaceWith($videoElement)
+
+		nextVideo(getDiv);
+
+	} else {
+
+		nextImage(getDiv);
+	}
+
+		//update caption clicked to be alt attribute of next image
+		$captionClicked = getDiv.find("img").attr("alt");
+
+		//update caption of overlay
+		$caption.text($captionClicked);
 }
 
 /*This function checks what image was selected by user, and shows appropriate arrows. 
 Don't want to show left arrow if user clicked 1st image.*/
 function arrowCheck(arrow, id) {
-	if($imageSelected.is(id)){
+	if($mediaSelected.is(id)){
 		$(arrow).hide();
 	} else {
 		$(arrow).show();
@@ -38,7 +85,7 @@ function arrowCheck(arrow, id) {
 }
 
 //Add image to overlay
-$overlay.append($image);
+$overlay.append($overlayContainer);
 
 //Add caption to overlay
 $overlay.append($caption);
@@ -53,13 +100,30 @@ $(".container a").click(function(event){
 	event.preventDefault();
 	
 	//store thumbnail anchor that was clicked for cycling through pics with arrows
-	$imageSelected = $(event.target).parent();
+	$mediaSelected = $(event.target).parent();
 	
-	//capture the image location
-	$imageLocation = $(this).attr("href");
+	//check if anchor is clicked thmubnail clicked is an image or video, if video then append videoElement image. If not a video, then append imageElement
+	if($mediaSelected.is(".video")){
+		$('#media-container').append($videoElement);
 
-	//update the overlay-img with the image location
-	$image.children("#overlay-img").attr("src", $imageLocation);
+		//capture the video source
+		$mediaLocation = $(this).attr("src");
+
+		//update the overlay-video with the video location
+		$("#overlay-video").attr("src", $mediaLocation)
+
+	} else {
+		//its an image, so append the $imageElement
+		$('#media-container').append($imageElement);
+
+		//capture the image location
+		$mediaLocation = $(this).attr("href");
+
+		//update the overlay-img with the image location
+		$("#overlay-img").attr("src", $mediaLocation);
+	}
+
+	// if video, append videoElement
 
 	//Capture the alt attribute of the element clicked
 	$captionClicked = $(this).children().attr("alt");
@@ -76,16 +140,19 @@ $(".container a").click(function(event){
 
 });
 
-//When overlay is clicked we want to hide the overlay - UPDATE THIS WITH AN Close button
+//When overlay is clicked we want to hide the overlay unless media is clicked
 
 $overlay.click(function(event){
 	
 	//capture event target
 	var clicked = $(event.target);
 	
-	//hide if click was not on overlay image wrapper
+	//hide and stop video if click was not on overlay image wrapper
 	if(!clicked.is('#overlay-img')){
 		$overlay.hide();
+
+		//if overlay was a video, this stops the video playback
+		$("#overlay-video").attr("src", "");
 	} 	
 })
 
@@ -93,12 +160,12 @@ $overlay.click(function(event){
 
 $("#arrow-left").click(function(){
 
-	if(!$imageSelected.is("#first")) {
+	if(!$mediaSelected.is("#first")) {
 		
 		//traverse up DOM to get next .pics div
-		$prevImageDiv = $imageSelected.closest("div").prev();
+		$prevMediaDiv = $mediaSelected.closest("div").prev();
 		
-		cycleImage($prevImageDiv);
+		cycleMedia($prevMediaDiv);
 
 	}
 
@@ -110,12 +177,12 @@ $("#arrow-left").click(function(){
 
 $("#arrow-right").click(function(){
 	
-	if(!$imageSelected.is("#last")) {
+	if(!$mediaSelected.is("#last")) {
 	
 		//traverse down DOM to get next .pics div
-		$nextImageDiv = $imageSelected.closest("div").next();
+		$nextMediaDiv = $mediaSelected.closest("div").next();
 		
-		cycleImage($nextImageDiv); 
+		cycleMedia($nextMediaDiv); 
 	
 	}
 
