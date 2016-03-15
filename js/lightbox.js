@@ -71,7 +71,8 @@ $(".container a").click(function(event){
 	$overlay.show();
 
 	arrowCheck('#arrow-left', '#first');
-	arrowCheck('#arrow-right', '#last'); 
+	arrowCheck('#arrow-right', '#last');
+
 
 });
 
@@ -123,6 +124,9 @@ $("#arrow-right").click(function(){
 	
 	return false;
 })
+
+
+
 
 
 
