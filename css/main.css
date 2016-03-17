@@ -39,6 +39,10 @@
 	margin: 25px 30px;
 }
 
+.pics:hover {
+	cursor: pointer;
+}
+
 .pics img {
 	max-width: 100%;
 	max-height: 100%;
@@ -149,6 +153,12 @@
 	background-color: gray;
     display: block;
     transform: rotate(-45deg);
+}
+
+.hide {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 2s, opacity 0.5s linear;
 }
 
 

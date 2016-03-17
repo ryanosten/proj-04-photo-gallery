@@ -51,14 +51,14 @@ function cycleMedia(getDiv) {
 	} else if(isVideo && !nextIsVideo) {
 		
 		//replace $videoElement with $imageElement
-		$($videoElement).replaceWith($imageElement);
+		$videoElement.replaceWith($imageElement);
 
 		nextImage(getDiv);
 		
 	} else if(!isVideo && nextIsVideo) {
 
 		//replace $imageElement with $videoElement
-		$($imageElement).replaceWith($videoElement)
+		$imageElement.replaceWith($videoElement)
 
 		nextVideo(getDiv);
 
@@ -149,7 +149,12 @@ $overlay.click(function(event){
 	
 	//hide and stop video if click was not on overlay image wrapper
 	if(!clicked.is('#overlay-img')){
+		
+		//hide overlay
 		$overlay.hide();
+
+		//remove Element in media container
+		$('#media-container').children().remove();
 
 		//if overlay was a video, this stops the video playback
 		$("#overlay-video").attr("src", "");
@@ -191,6 +196,52 @@ $("#arrow-right").click(function(){
 	
 	return false;
 })
+
+//when left and right arrow keyboard characters are pressed, we want to cycle through the overlay imgs
+
+//left arrow keypress function
+$("body").keydown(function(event){
+	//check if overlay showing
+	if($overlay.css("display") != "none"){
+		//if overlay showing, then cycle images to right with right arrow key press
+		if(event.which == 37){
+			if(!$mediaSelected.is("#first")) {
+		
+				//traverse up DOM to get next .pics div
+				$prevMediaDiv = $mediaSelected.closest("div").prev();
+				
+				cycleMedia($prevMediaDiv);
+			}
+
+			arrowCheck('#arrow-left', '#first');
+			arrowCheck('#arrow-right', '#last'); 
+		} 
+	}
+});
+
+//right arrow keypress function
+$("body").keydown(function(event){
+	//check if overlay showing
+	if($overlay.css("display") != "none"){
+		//if overlay showing, then cycle images to right with right arrow key press
+		if(event.which == 39){
+			if(!$mediaSelected.is("#last")) {
+	
+				//traverse down DOM to get next .pics div
+				$nextMediaDiv = $mediaSelected.closest("div").next();
+				
+				cycleMedia($nextMediaDiv); 
+				}
+
+			arrowCheck('#arrow-left', '#first');
+			arrowCheck('#arrow-right', '#last'); 
+		} 
+	}
+});
+
+
+
+
 
 
 
