@@ -2,7 +2,7 @@ var $overlay = $('<div id="overlay"></div>')
 var $overlayContainer = $('<div id="img-wrapper"><a id="arrow-left"></a><div id="media-container"></div><a id="arrow-right"></a><a id="close-button"></a></div>')
 var $caption = $('<p id="caption"></p>')
 var $imageElement = $('<img id="overlay-img">');
-var $videoElement = $('<iframe id="overlay-video" width="560" height="315" frameborder="0"></iframe>');
+var $videoElement = $('<iframe id="overlay-video" width="667" height="421" frameborder="0"></iframe>');
 var $mediaSelected = $('');
 var $mediaLocation = $('');
 var $captionClicked = $('');
@@ -95,41 +95,51 @@ $("body").append($overlay);
 
 //Capture click event and link clicked
 $(".container a").click(function(event){
-	
+
 	//prevent default behavior
 	event.preventDefault();
 	
 	//store thumbnail anchor that was clicked for cycling through pics with arrows
 	$mediaSelected = $(event.target).parent();
+
+	//Clear all contents of the overlay media and caption
+	$videoElement.removeAttr("src");
+	$imageElement.removeAttr("src");
+	$caption.text("")
 	
 	//check if anchor is clicked thmubnail clicked is an image or video, if video then append videoElement image. If not a video, then append imageElement
 	if($mediaSelected.is(".video")){
-		$('#media-container').append($videoElement);
 
 		//capture the video source
 		$mediaLocation = $(this).attr("src");
 
 		//update the overlay-video with the video location
-		$("#overlay-video").attr("src", $mediaLocation)
+		$videoElement.attr("src", $mediaLocation)
+
+		//its an image, so append the $imageElement
+		$('#media-container').append($videoElement);
 
 	} else {
-		//its an image, so append the $imageElement
-		$('#media-container').append($imageElement);
-
+		
 		//capture the image location
 		$mediaLocation = $(this).attr("href");
 
 		//update the overlay-img with the image location
-		$("#overlay-img").attr("src", $mediaLocation);
+		$imageElement.attr("src", $mediaLocation);
+
+		//its an image, so append the $imageElement
+		$('#media-container').append($imageElement)
 	}
 
-	// if video, append videoElement
-
-	//Capture the alt attribute of the element clicked
-	$captionClicked = $(this).children().attr("alt");
-
-	//update the overlay with the image location
-	$caption.text($captionClicked);
+	
+		//Capture the alt attribute of the element clicked
+		$captionClicked = $(this).children().attr("alt");
+		
+		setTimeout(function(){
+		
+		//update the overlay with the image location. set delay to give time for media to load first
+		$caption.text($captionClicked);
+		}, 10);
 
 	//show the overlay
 	$overlay.show();
