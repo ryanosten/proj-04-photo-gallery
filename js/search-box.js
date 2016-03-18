@@ -8,7 +8,7 @@ $('.search').keyup(function() {
 	
 	//store the input text and store count of number of characters in input
 	$value = $(this).val().toLowerCase();
-	count = $value.length
+	count = $value.length;
 	
 	//hide all images
 	$(".container img").addClass("hide");
@@ -24,6 +24,6 @@ $('.search').keyup(function() {
 		if($altText.substring(0, count) == $value){
 			$(this).removeClass("hide");
 		} 
-	})
-})
+	});
+});
 

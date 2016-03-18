@@ -1,6 +1,6 @@
-var $overlay = $('<div class="overlay"></div>')
-var $overlayContainer = $('<div class="img-wrapper"><a class="arrow-left"></a><div class="media-container"></div><a class="arrow-right"></a><a class="close-button"></a></div>')
-var $caption = $('<p class="caption"></p>')
+var $overlay = $('<div class="overlay"></div>');
+var $overlayContainer = $('<div class="img-wrapper"><a class="arrow-left"></a><div class="media-container"></div><a class="arrow-right"></a><a class="close-button"></a></div>');
+var $caption = $('<p class="caption"></p>');
 var $imageElement = $('<img class="overlay-img">');
 var $videoElement = $('<iframe class="overlay-video" width="700" height="485" frameborder="0"></iframe>');
 var $mediaSelected = $('');
@@ -13,7 +13,7 @@ var $nextMediaDiv = $('');
 function nextVideo(getDiv){
 
 		//get $mediaLocation
-		$mediaLocation = getDiv.find("img").attr("href");
+		$mediaLocation = getDiv.find("img").attr("data-href");
 		
 		//update the #overlay-video
 		$(".overlay-video").attr("src", $mediaLocation);
@@ -40,7 +40,7 @@ function cycleMedia(getDiv) {
 	//store whether current media is video
 	var isVideo = $mediaSelected.is('.video');
 	//store whether next media is a video
-	var nextIsVideo = getDiv.children('a').is('.video')
+	var nextIsVideo = getDiv.children('a').is('.video');
 
 	//check whether current media is video and if next is video
 	if(isVideo && nextIsVideo){
@@ -58,7 +58,7 @@ function cycleMedia(getDiv) {
 	} else if(!isVideo && nextIsVideo) {
 
 		//replace $imageElement with $videoElement
-		$imageElement.replaceWith($videoElement)
+		$imageElement.replaceWith($videoElement);
 
 		nextVideo(getDiv);
 
@@ -105,16 +105,16 @@ $(".container a").click(function(event){
 	//Clear all contents of the overlay media and caption
 	$videoElement.removeAttr("src");
 	$imageElement.removeAttr("src");
-	$caption.text("")
+	$caption.text("");
 	
 	//check if anchor is clicked thmubnail clicked is an image or video, if video then append videoElement image. If not a video, then append imageElement
 	if($mediaSelected.is(".video")){
 
 		//capture the video source
-		$mediaLocation = $(this).find("img").attr("href");
+		$mediaLocation = $(this).find("img").attr("data-href");
 
 		//update the overlay-video with the video location
-		$videoElement.attr("src", $mediaLocation)
+		$videoElement.attr("src", $mediaLocation);
 
 		//its an image, so append the $imageElement
 		$('.media-container').append($videoElement);
@@ -128,7 +128,7 @@ $(".container a").click(function(event){
 		$imageElement.attr("src", $mediaLocation);
 
 		//its an image, so append the $imageElement
-		$('.media-container').append($imageElement)
+		$('.media-container').append($imageElement);
 	}
 
 	
@@ -169,7 +169,7 @@ $overlay.click(function(event){
 		//if overlay was a video, this stops the video playback
 		$(".overlay-video").attr("src", "");
 	} 	
-})
+});
 
 //When arrows are clicked, we want to cycle through the images backward or forward
 
@@ -188,7 +188,7 @@ $(".arrow-left").click(function(){
 	arrowCheck('.arrow-right', '.last');
 	
 	return false;
-})
+});
 
 $(".arrow-right").click(function(){
 	
@@ -205,7 +205,7 @@ $(".arrow-right").click(function(){
 	arrowCheck('.arrow-right', '.last'); 
 	
 	return false;
-})
+});
 
 //when left and right arrow keyboard characters are pressed, we want to cycle through the overlay imgs
 
@@ -235,7 +235,7 @@ $("body").keydown(function(event){
 	if($overlay.css("display") != "none"){
 		//if overlay showing, then cycle images to right with right arrow key press
 		if(event.which == 39){
-			if(!$mediaSelected.is(".last")) {
+			if(!$mediaSelected.is(".last")){
 	
 				//traverse down DOM to get next .pics div
 				$nextMediaDiv = $mediaSelected.closest("div").next();
