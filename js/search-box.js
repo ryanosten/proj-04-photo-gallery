@@ -4,7 +4,7 @@ var count = 0;
 
 
 //When user enters text in the input field, check the alt text on imgs and only show imgs that match input text
-$('#search').keyup(function() {
+$('.search').keyup(function() {
 	
 	//store the input text and store count of number of characters in input
 	$value = $(this).val().toLowerCase();

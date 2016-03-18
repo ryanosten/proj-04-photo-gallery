@@ -1,8 +1,8 @@
-var $overlay = $('<div id="overlay"></div>')
-var $overlayContainer = $('<div id="img-wrapper"><a id="arrow-left"></a><div id="media-container"></div><a id="arrow-right"></a><a id="close-button"></a></div>')
-var $caption = $('<p id="caption"></p>')
-var $imageElement = $('<img id="overlay-img">');
-var $videoElement = $('<iframe id="overlay-video" width="667" height="421" frameborder="0"></iframe>');
+var $overlay = $('<div class="overlay"></div>')
+var $overlayContainer = $('<div class="img-wrapper"><a class="arrow-left"></a><div class="media-container"></div><a class="arrow-right"></a><a class="close-button"></a></div>')
+var $caption = $('<p class="caption"></p>')
+var $imageElement = $('<img class="overlay-img">');
+var $videoElement = $('<iframe class="overlay-video" width="700" height="485" frameborder="0"></iframe>');
 var $mediaSelected = $('');
 var $mediaLocation = $('');
 var $captionClicked = $('');
@@ -13,10 +13,10 @@ var $nextMediaDiv = $('');
 function nextVideo(getDiv){
 
 		//get $mediaLocation
-		$mediaLocation = getDiv.find("a").attr("src");
+		$mediaLocation = getDiv.find("img").attr("href");
 		
 		//update the #overlay-video
-		$("#overlay-video").attr("src", $mediaLocation);
+		$(".overlay-video").attr("src", $mediaLocation);
 
 		//update $mediaSelected
 		$mediaSelected = getDiv.find("a");
@@ -28,7 +28,7 @@ function nextImage(getDiv){
 		$mediaLocation = getDiv.find("a").attr("href");
 
 		//update the #overlay-img's src attribute
-		$('#overlay-img').attr("src", $mediaLocation);
+		$('.overlay-img').attr("src", $mediaLocation);
 		
 		//update mediaSelected to be current media
 		$mediaSelected = getDiv.find("a");
@@ -76,8 +76,8 @@ function cycleMedia(getDiv) {
 
 /*This function checks what image was selected by user, and shows appropriate arrows. 
 Don't want to show left arrow if user clicked 1st image.*/
-function arrowCheck(arrow, id) {
-	if($mediaSelected.is(id)){
+function arrowCheck(arrow, position) {
+	if($mediaSelected.is(position)){
 		$(arrow).hide();
 	} else {
 		$(arrow).show();
@@ -111,13 +111,13 @@ $(".container a").click(function(event){
 	if($mediaSelected.is(".video")){
 
 		//capture the video source
-		$mediaLocation = $(this).attr("src");
+		$mediaLocation = $(this).find("img").attr("href");
 
 		//update the overlay-video with the video location
 		$videoElement.attr("src", $mediaLocation)
 
 		//its an image, so append the $imageElement
-		$('#media-container').append($videoElement);
+		$('.media-container').append($videoElement);
 
 	} else {
 		
@@ -128,7 +128,7 @@ $(".container a").click(function(event){
 		$imageElement.attr("src", $mediaLocation);
 
 		//its an image, so append the $imageElement
-		$('#media-container').append($imageElement)
+		$('.media-container').append($imageElement)
 	}
 
 	
@@ -144,8 +144,8 @@ $(".container a").click(function(event){
 	//show the overlay
 	$overlay.show();
 
-	arrowCheck('#arrow-left', '#first');
-	arrowCheck('#arrow-right', '#last');
+	arrowCheck('.arrow-left', '.first');
+	arrowCheck('.arrow-right', '.last');
 
 
 });
@@ -158,24 +158,24 @@ $overlay.click(function(event){
 	var clicked = $(event.target);
 	
 	//hide and stop video if click was not on overlay image wrapper
-	if(!clicked.is('#overlay-img')){
+	if(!clicked.is('.overlay-img')){
 		
 		//hide overlay
 		$overlay.hide();
 
 		//remove Element in media container
-		$('#media-container').children().remove();
+		$('.media-container').children().remove();
 
 		//if overlay was a video, this stops the video playback
-		$("#overlay-video").attr("src", "");
+		$(".overlay-video").attr("src", "");
 	} 	
 })
 
 //When arrows are clicked, we want to cycle through the images backward or forward
 
-$("#arrow-left").click(function(){
+$(".arrow-left").click(function(){
 
-	if(!$mediaSelected.is("#first")) {
+	if(!$mediaSelected.is(".first")) {
 		
 		//traverse up DOM to get next .pics div
 		$prevMediaDiv = $mediaSelected.closest("div").prev();
@@ -184,15 +184,15 @@ $("#arrow-left").click(function(){
 
 	}
 
-	arrowCheck('#arrow-left', '#first');
-	arrowCheck('#arrow-right', '#last');
+	arrowCheck('.arrow-left', '.first');
+	arrowCheck('.arrow-right', '.last');
 	
 	return false;
 })
 
-$("#arrow-right").click(function(){
+$(".arrow-right").click(function(){
 	
-	if(!$mediaSelected.is("#last")) {
+	if(!$mediaSelected.is(".last")) {
 	
 		//traverse down DOM to get next .pics div
 		$nextMediaDiv = $mediaSelected.closest("div").next();
@@ -201,8 +201,8 @@ $("#arrow-right").click(function(){
 	
 	}
 
-	arrowCheck('#arrow-left', '#first');
-	arrowCheck('#arrow-right', '#last'); 
+	arrowCheck('.arrow-left', '.first');
+	arrowCheck('.arrow-right', '.last'); 
 	
 	return false;
 })
@@ -215,7 +215,7 @@ $("body").keydown(function(event){
 	if($overlay.css("display") != "none"){
 		//if overlay showing, then cycle images to right with right arrow key press
 		if(event.which == 37){
-			if(!$mediaSelected.is("#first")) {
+			if(!$mediaSelected.is(".first")) {
 		
 				//traverse up DOM to get next .pics div
 				$prevMediaDiv = $mediaSelected.closest("div").prev();
@@ -223,8 +223,8 @@ $("body").keydown(function(event){
 				cycleMedia($prevMediaDiv);
 			}
 
-			arrowCheck('#arrow-left', '#first');
-			arrowCheck('#arrow-right', '#last'); 
+			arrowCheck('.arrow-left', '.first');
+			arrowCheck('.arrow-right', '.last'); 
 		} 
 	}
 });
@@ -235,7 +235,7 @@ $("body").keydown(function(event){
 	if($overlay.css("display") != "none"){
 		//if overlay showing, then cycle images to right with right arrow key press
 		if(event.which == 39){
-			if(!$mediaSelected.is("#last")) {
+			if(!$mediaSelected.is(".last")) {
 	
 				//traverse down DOM to get next .pics div
 				$nextMediaDiv = $mediaSelected.closest("div").next();
@@ -243,8 +243,8 @@ $("body").keydown(function(event){
 				cycleMedia($nextMediaDiv); 
 				}
 
-			arrowCheck('#arrow-left', '#first');
-			arrowCheck('#arrow-right', '#last'); 
+			arrowCheck('.arrow-left', '.first');
+			arrowCheck('.arrow-right', '.last'); 
 		} 
 	}
 });
