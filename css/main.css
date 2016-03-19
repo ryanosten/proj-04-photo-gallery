@@ -157,7 +157,25 @@
   transition: visibility 0s 2s, opacity 0.5s linear;
 }
 
+iframe {
+	width: 100%;
+	max-width: 850px;
+	height: 150px;
+}
+
 /** MEDIA QUERIES **/
+
+@media (min-width: 425px){
+	iframe {
+		height: 200px;
+	}
+}
+
+@media (min-width: 600px){
+	iframe {
+		height: 250px;
+	}
+}
 
 @media (min-width: 820px) {
 	.search {
@@ -182,6 +200,10 @@
 	.close-button {
 		right: -10%;
 	}
+
+	iframe {
+		height: 350px;
+	}
 }
 
 @media (min-width: 1025px) {
@@ -197,6 +219,11 @@
  
 	.pics:nth-of-type(4n + 1) {
 		margin-left: 0px;
+	}
+
+	iframe {
+		width: 700px;
+		height: 500px;
 	}
 
 }
