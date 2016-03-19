@@ -2,7 +2,7 @@ var $overlay = $('<div class="overlay"></div>');
 var $overlayContainer = $('<div class="img-wrapper"><a class="arrow-left"></a><div class="media-container"></div><a class="arrow-right"></a><a class="close-button"></a></div>');
 var $caption = $('<p class="caption"></p>');
 var $imageElement = $('<img class="overlay-img">');
-var $videoElement = $('<iframe class="overlay-video" width="700" height="485" frameborder="0"></iframe>');
+var $videoElement = $('<iframe class="overlay-video" frameborder="0"></iframe>');
 var $mediaSelected = $('');
 var $mediaLocation = $('');
 var $captionClicked = $('');
